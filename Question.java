@@ -16,29 +16,33 @@ public class Question implements java.io.Serializable
     
     public void learn(){
         System.out.print("I give up! What were you thinking of? ");
-        String ans=in.nextLine();
-        System.out.print("What is a question to which the answer is 'yes' for "+question+" but 'no' for "+ans+"?\nQuestion: ");
-        String newQ=in.nextLine();
+        String ansB=in.nextLine();
+        System.out.print("What is a question to which the answer is 'no' for "+question+" but 'yes' for "+ansB+"?\nQuestion: ");
+        String ansC=in.nextLine();
+        Question A = this;
+        Question B = new Question(ansB);
+        Question C = new Question(ansC);
         
-        Question newQuestion = new Question(newQ);
-        Question newAnswer = new Question(ans);
-        newAnswer.terminal=true;
-        newAnswer.answer="no";
+        C.answer=A.answer;
+        A.answer="no";
+        B.answer="yes";
         
-        newQuestion.parent=this.parent;
-        newQuestion.yes=this;
-        this.parent=newQuestion;
+        C.parent=A.parent;
+        A.parent=C;
+        B.parent=C;
         
-        if(this.answer.equals("yes")){
-            newQuestion.parent.yes=newQuestion;
+        C.yes=B;
+        C.no=A;
+        
+        A.terminal=true;
+        B.terminal=true;
+        
+        if(C.answer.equals("yes")){
+            C.parent.yes=C;
         }
-        else
-        {
-            newQuestion.parent.no=newQuestion;
+        else if(C.answer.equals("no")){
+            C.parent.no=C;
         }
-        
-        newQuestion.no=newAnswer;
-        newAnswer.parent=newQuestion;
     }
     
     public void ask(){
@@ -71,7 +75,7 @@ public class Question implements java.io.Serializable
     }
     
     public void printQuestion(String space){
-        System.out.println(space+question);
+        System.out.println(space+answer+" "+question);
         if(yes!=null){
             yes.printQuestion(space+space);
         }

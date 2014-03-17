@@ -27,9 +27,12 @@ public class Game
             root=posRoot;
         }
         
+        //root.printQuestion("-");
+        
         boolean play = true;
         while(play){
             root.ask();
+            //root.printQuestion(" ");
             System.out.print("Would you like to play again? (yes/no): ");
             String ans=in.nextLine();
             System.out.println();
